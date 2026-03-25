@@ -1,0 +1,707 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Natanael · Dev Freelance</title>
+<link href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:ital,wght@0,300;0,400;0,500;0,700;1,400&family=Epilogue:wght@400;700;800;900&display=swap" rel="stylesheet">
+<style>
+*,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
+:root{
+  --blk:#060606;
+  --d1:#0D0D0D;
+  --d2:#141414;
+  --d3:#1C1C1C;
+  --d4:#252525;
+  --blue:#4A9EFF;
+  --blue-d:#2278E8;
+  --pink:#FF6B9E;
+  --cyan:#5BC8F5;
+  --yellow:#FFD166;
+  --orange:#FF9A5C;
+  --purple:#C084FC;
+  --wh:#F0F0F0;
+  --wh2:#C8C8C8;
+  --g1:#888;
+  --g2:#444;
+  --g3:#2A2A2A;
+  --mono:'JetBrains Mono',monospace;
+  --disp:'Epilogue',sans-serif;
+}
+html{scroll-behavior:smooth}
+body{font-family:var(--mono);background:var(--blk);color:var(--wh);overflow-x:hidden;cursor:none}
+
+/* scanlines — very subtle */
+body::before{content:'';position:fixed;inset:0;background:repeating-linear-gradient(0deg,transparent,transparent 3px,rgba(0,0,0,.04) 3px,rgba(0,0,0,.04) 4px);pointer-events:none;z-index:8000}
+
+/* CURSOR */
+#cur{width:3px;height:22px;background:var(--blue);position:fixed;pointer-events:none;z-index:9999;transform:translate(-50%,-50%);animation:blink .85s step-end infinite}
+@keyframes blink{0%,100%{opacity:1}50%{opacity:0}}
+::-webkit-scrollbar{width:2px}::-webkit-scrollbar-thumb{background:var(--g3)}
+
+/* TOPBAR */
+.topbar{
+  position:fixed;top:0;left:0;right:0;z-index:500;
+  height:44px;display:flex;align-items:center;gap:1.25rem;
+  padding:0 2rem;
+  background:rgba(6,6,6,.97);
+  border-bottom:1px solid rgba(74,158,255,.08);
+  backdrop-filter:blur(12px);
+}
+.tb-dots{display:flex;gap:6px;align-items:center;flex-shrink:0}
+.tb-dot{width:11px;height:11px;border-radius:50%}
+.tb-dot.r{background:#FF5F57}.tb-dot.y{background:#FFBD2E}.tb-dot.g{background:#28CA41}
+.tb-title{font-size:12px;color:var(--g1);flex:1;text-align:center;letter-spacing:.04em}
+.tb-title span{color:var(--blue)}
+.tb-nav{display:flex;gap:2rem;list-style:none}
+.tb-nav a{font-size:11px;letter-spacing:.08em;color:var(--g1);text-decoration:none;transition:color .2s;cursor:none}
+.tb-nav a:hover,.tb-nav a.on{color:var(--blue)}
+
+/* MAIN WRAP */
+.w{padding-top:44px}
+
+/* ── HERO ── */
+.hero{
+  min-height:calc(100vh - 44px);
+  display:grid;grid-template-columns:55% 45%;
+  border-bottom:1px solid rgba(74,158,255,.06);
+  position:relative;overflow:hidden;
+}
+
+/* big ghost letter */
+.hero-ghost{
+  position:absolute;right:-.05em;bottom:-.1em;
+  font-family:var(--disp);font-size:clamp(260px,30vw,440px);
+  font-weight:900;color:rgba(74,158,255,.025);
+  line-height:1;pointer-events:none;user-select:none;z-index:0;
+}
+
+/* LEFT — code + heading */
+.hero-l{
+  padding:4.5rem 4rem 4rem;
+  display:flex;flex-direction:column;justify-content:center;
+  position:relative;z-index:2;
+}
+
+.hero-prompt{
+  font-size:13px;color:var(--g1);margin-bottom:1.75rem;
+  display:flex;align-items:center;gap:8px;
+}
+.hero-prompt .path{color:var(--cyan)}.hero-prompt .sym{color:var(--blue)}
+
+.hero-name{
+  font-family:var(--disp);
+  font-size:clamp(60px,7.5vw,108px);
+  font-weight:900;line-height:.9;letter-spacing:-.035em;
+  color:var(--wh);margin-bottom:1.5rem;
+}
+.hero-name .dim{-webkit-text-stroke:1.5px rgba(240,240,240,.18);color:transparent}
+.hero-name .acc{color:var(--blue)}
+
+.hero-role{
+  font-size:16px;line-height:1.8;color:var(--wh2);
+  margin-bottom:2.5rem;max-width:440px;font-weight:300;
+}
+.hero-role .g{color:var(--blue)}.hero-role .c{color:var(--cyan)}.hero-role .p{color:var(--pink)}
+
+.hero-btns{display:flex;gap:.75rem;flex-wrap:wrap;margin-bottom:3.5rem}
+
+.btn-t{
+  font-family:var(--mono);font-size:12px;font-weight:500;letter-spacing:.06em;
+  color:var(--blue);background:transparent;
+  border:1px solid rgba(74,158,255,.35);padding:12px 22px;border-radius:3px;
+  text-decoration:none;cursor:none;transition:all .22s;
+  display:inline-flex;align-items:center;gap:8px;position:relative;overflow:hidden;
+}
+.btn-t::before{content:'';position:absolute;inset:0;background:var(--blue);transform:scaleX(0);transform-origin:left;transition:transform .22s ease;z-index:-1}
+.btn-t:hover{color:var(--blk);border-color:var(--blue)}.btn-t:hover::before{transform:scaleX(1)}
+.btn-g{font-family:var(--mono);font-size:12px;font-weight:400;letter-spacing:.06em;color:var(--g1);border:1px solid var(--g3);padding:12px 22px;border-radius:3px;text-decoration:none;cursor:none;transition:all .2s;display:inline-flex;align-items:center;gap:8px}
+.btn-g:hover{color:var(--wh);border-color:var(--g1)}
+
+/* code block */
+.code-block{
+  background:var(--d1);
+  border:1px solid rgba(74,158,255,.08);
+  border-radius:4px;
+  padding:1.5rem 0 1.5rem;
+  font-size:14px;line-height:1.9;
+  position:relative;overflow:hidden;
+}
+.code-block::before{content:'';position:absolute;left:0;top:0;bottom:0;width:44px;background:rgba(0,0,0,.25);border-right:1px solid rgba(255,255,255,.03)}
+.ln{font-size:11px;color:var(--g2);min-width:44px;padding-right:14px;text-align:right;user-select:none;flex-shrink:0}
+.cl{display:flex;align-items:baseline}
+
+/* syntax */
+.kw{color:var(--pink)}.fn{color:var(--cyan)}.str{color:var(--yellow)}.val{color:var(--orange)}.cmt{color:var(--g1);font-style:italic}.op{color:var(--g1)}.ty{color:var(--purple)}.prop{color:var(--cyan)}.var{color:var(--wh)}
+.cc{display:inline-block;width:9px;height:15px;background:var(--blue);vertical-align:middle;animation:blink .85s step-end infinite;margin-left:2px}
+
+/* RIGHT — terminal */
+.hero-r{
+  background:var(--d1);
+  border-left:1px solid rgba(74,158,255,.06);
+  display:flex;align-items:center;justify-content:center;
+  padding:2.5rem;position:relative;z-index:2;
+}
+
+.term{
+  width:100%;
+  background:var(--blk);
+  border:1px solid rgba(74,158,255,.14);
+  border-radius:8px;
+  overflow:hidden;
+  box-shadow:0 0 50px rgba(74,158,255,.05),0 30px 60px rgba(0,0,0,.5);
+}
+.term-bar{
+  height:36px;background:var(--d2);border-bottom:1px solid rgba(255,255,255,.05);
+  display:flex;align-items:center;padding:0 1rem;gap:.5rem;
+}
+.term-bar-t{flex:1;text-align:center;font-size:11px;color:var(--g2);letter-spacing:.06em}
+.term-body{padding:1.5rem 1.75rem;font-size:13px;line-height:2}
+.tl{display:flex;gap:.5rem;flex-wrap:wrap;align-items:baseline}
+.tp{color:var(--blue);flex-shrink:0;font-size:13px}
+.tc{color:var(--cyan)}
+.to{color:var(--g1);padding-left:1.25rem;font-size:13px}
+.tok{color:var(--blue);font-size:13px}
+.terr{color:var(--pink);font-size:13px}
+.tpath{color:var(--yellow);font-size:13px}
+.tb{height:.5rem}
+
+/* ── STATS ── */
+.stats{
+  display:grid;grid-template-columns:repeat(4,1fr);
+  border-bottom:1px solid rgba(74,158,255,.06);
+}
+.stat{padding:2.5rem 2.5rem;border-right:1px solid rgba(74,158,255,.06);transition:background .2s;cursor:none}
+.stat:last-child{border-right:none}
+.stat:hover{background:var(--d1)}
+.stat-n{font-family:var(--disp);font-size:38px;font-weight:900;color:var(--blue);letter-spacing:-.02em;line-height:1;margin-bottom:.4rem}
+.stat-l{font-size:11px;letter-spacing:.1em;text-transform:uppercase;color:var(--g1)}
+
+/* ── SECTIONS ── */
+.sec{padding:6rem 4rem;max-width:900px}
+.sec.full{max-width:100%;padding-left:4rem;padding-right:4rem}
+.ey{font-size:10px;letter-spacing:.24em;text-transform:uppercase;color:var(--blue);margin-bottom:1rem;display:flex;align-items:center;gap:10px}
+.ey::before{content:'//';color:var(--g2)}
+.st{font-family:var(--disp);font-size:clamp(30px,3.2vw,46px);font-weight:900;letter-spacing:-.02em;color:var(--wh);line-height:1.05;margin-bottom:1.5rem}
+.st .acc{color:var(--blue)}
+.st .dim{-webkit-text-stroke:1px rgba(240,240,240,.18);color:transparent}
+.rule{border:none;border-top:1px solid rgba(74,158,255,.06)}
+
+/* ── ABOUT ── */
+.ab-body{font-size:15px;line-height:2;color:var(--wh2);max-width:600px;font-weight:300}
+.ab-body p{margin-bottom:1.25rem}
+.ab-body .hl{color:var(--wh);font-weight:400}.ab-body .g{color:var(--blue)}
+.skills{display:flex;flex-wrap:wrap;gap:.5rem;margin-top:2.5rem}
+.skill{font-size:11px;letter-spacing:.06em;padding:6px 13px;border:1px solid var(--g3);color:var(--g1);border-radius:3px;transition:all .2s;cursor:none}
+.skill:hover{border-color:var(--blue);color:var(--blue)}
+
+/* ── SPLIT about / services ── */
+.split{display:grid;grid-template-columns:1fr 1fr;border-top:1px solid rgba(74,158,255,.06);border-bottom:1px solid rgba(74,158,255,.06)}
+.split-l{padding:6rem 4rem;border-right:1px solid rgba(74,158,255,.06)}
+.split-r{padding:6rem 4rem}
+
+/* services */
+.svc-list{display:flex;flex-direction:column;gap:0;margin-top:.5rem}
+.svc{
+  padding:1.75rem 0;border-bottom:1px solid var(--g3);
+  border-left:2px solid transparent;padding-left:1rem;margin-left:-1rem;
+  transition:all .22s;cursor:none;
+}
+.svc:first-child{border-top:1px solid var(--g3)}
+.svc:hover{border-left-color:var(--blue);padding-left:1.5rem;margin-left:-1.5rem}
+.svc-num{font-size:10px;color:var(--g2);letter-spacing:.1em;margin-bottom:.5rem}
+.svc-name{font-family:var(--disp);font-size:20px;font-weight:700;color:var(--wh);margin-bottom:.4rem}
+.svc-desc{font-size:13px;line-height:1.8;color:var(--g1);margin-bottom:.5rem}
+.svc-price{font-size:12px;color:var(--blue);font-weight:500}
+
+/* ── PROJECTS ── */
+.proj-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:1px;background:rgba(74,158,255,.05);border:1px solid rgba(74,158,255,.05);margin-top:3rem}
+.proj{background:var(--blk);display:flex;flex-direction:column;cursor:none;transition:background .22s;overflow:hidden}
+.proj:hover{background:var(--d1)}
+
+/* mockup previews */
+.pv{height:160px;display:flex;align-items:center;justify-content:center;position:relative;overflow:hidden}
+
+.pv-garage{background:#040404;border-bottom:1px solid #161616}
+.pvg-bar{width:52px;height:1px;background:#C8C8C8;margin:0 auto 9px}
+.pvg-title{font-family:var(--disp);font-size:22px;font-weight:900;color:#D0D0D0;letter-spacing:.22em;text-align:center}
+.pvg-sub{font-size:7px;letter-spacing:.28em;color:#444;text-align:center;margin-top:4px;text-transform:uppercase}
+.pvg-tag{display:inline-block;font-size:7px;letter-spacing:.12em;color:#555;border:1px solid #222;padding:3px 10px;margin-top:12px}
+
+.pv-beep{background:#050505;border-bottom:1px solid #0F0F0F}
+.pvb-logo{width:42px;height:42px;border-radius:50%;background:#00CCCC;display:flex;align-items:center;justify-content:center;margin:0 auto 8px}
+.pvb-logo span{font-size:9px;font-weight:800;color:#060606;font-family:var(--disp)}
+.pvb-title{font-family:var(--disp);font-size:13px;font-weight:800;color:#DDD;text-align:center;letter-spacing:.06em}
+.pvb-sub{font-size:7px;color:#00CCCC;text-align:center;letter-spacing:.14em;margin-top:3px;text-transform:uppercase}
+.pvb-chips{display:flex;gap:4px;justify-content:center;margin-top:9px}
+.pvb-chip{font-size:6px;padding:2px 7px;background:rgba(0,204,204,.1);border:1px solid rgba(0,204,204,.2);color:#00CCCC;border-radius:100px}
+
+.pv-minas{background:#F5F1EC;border-bottom:1px solid #EDE6DC}
+.pvm-title{font-family:'Georgia',serif;font-size:21px;font-weight:700;color:#1A1410;text-align:center;font-style:italic}
+.pvm-sub{font-size:7px;letter-spacing:.26em;color:#9C8E82;text-align:center;margin-top:4px;text-transform:uppercase}
+.pvm-line{width:36px;height:1px;background:#B5502A;margin:8px auto 0}
+
+.proj-body{padding:1.5rem 1.75rem;flex:1;display:flex;flex-direction:column}
+.proj-num{font-size:10px;color:var(--g2);letter-spacing:.1em;margin-bottom:.35rem}
+.proj-name{font-family:var(--disp);font-size:20px;font-weight:700;color:var(--wh);line-height:1.15;margin-bottom:.3rem}
+.proj-tag{font-size:11px;letter-spacing:.08em;text-transform:uppercase;color:var(--g1);margin-bottom:.65rem}
+.proj-desc{font-size:13px;line-height:1.85;color:var(--wh2);margin-bottom:.9rem}
+.proj-techs{display:flex;flex-wrap:wrap;gap:.35rem;margin-bottom:.9rem}
+.chip{font-size:10px;padding:3px 9px;border:1px solid var(--g3);color:var(--g2);border-radius:2px;letter-spacing:.05em}
+.proj-foot{margin-top:auto;padding:.75rem 1.75rem 1.25rem;border-top:1px solid rgba(255,255,255,.04);display:flex;align-items:center;justify-content:space-between}
+.proj-status{font-size:10px;letter-spacing:.1em;text-transform:uppercase;color:var(--blue);display:flex;align-items:center;gap:5px}
+.proj-status::before{content:'●';font-size:7px}
+.proj-lk{font-size:11px;color:var(--g1);text-decoration:none;cursor:none;border-bottom:1px solid var(--g3);padding-bottom:1px;transition:all .2s}
+.proj-lk:hover{color:var(--blue);border-color:var(--blue)}
+
+.proj.empty{border:1px dashed var(--g3);background:transparent;align-items:center;justify-content:center;padding:3rem 2rem;text-align:center;gap:.75rem}
+.proj.empty:hover{background:rgba(74,158,255,.02)}
+.empty-n{font-family:var(--disp);font-size:56px;font-weight:900;color:rgba(74,158,255,.07);line-height:1}
+.empty-l{font-family:var(--disp);font-size:16px;font-weight:700;color:var(--g1)}
+.empty-s{font-size:12px;color:var(--g2);line-height:1.7}
+
+/* TESTIMONIAL */
+.testi{margin-top:3rem;background:var(--d1);border:1px solid rgba(74,158,255,.08);border-left:3px solid var(--blue);padding:2rem 2.5rem}
+.testi-stars{color:var(--blue);letter-spacing:3px;font-size:14px;margin-bottom:.9rem}
+.testi-q{font-family:var(--disp);font-size:clamp(17px,2.2vw,23px);font-weight:700;color:var(--wh);line-height:1.5;margin-bottom:.9rem}
+.testi-q .acc{color:var(--blue)}
+.testi-by{font-size:12px;color:var(--g1);display:flex;align-items:center;gap:.65rem}
+.testi-sep{width:1px;height:12px;background:var(--g3)}
+
+/* PROCESS */
+.proc-list{margin-top:3rem;border:1px solid rgba(74,158,255,.06)}
+.proc{display:flex;gap:2rem;align-items:start;padding:2rem;border-bottom:1px solid rgba(74,158,255,.06);transition:background .2s;cursor:none}
+.proc:last-child{border-bottom:none}
+.proc:hover{background:var(--d1)}
+.proc-n{font-family:var(--disp);font-size:13px;font-weight:700;color:var(--blue);flex-shrink:0;width:24px;margin-top:3px}
+.proc-title{font-size:15px;font-weight:500;color:var(--wh);margin-bottom:.35rem}
+.proc-desc{font-size:13px;line-height:1.85;color:var(--wh2)}
+
+/* CONTACT */
+.ct-wrap{display:grid;grid-template-columns:1fr 1fr;border-top:1px solid rgba(74,158,255,.06)}
+.ct-l{padding:6rem 4rem;border-right:1px solid rgba(74,158,255,.06)}
+.ct-r{padding:6rem 4rem}
+.ct-links{margin-top:2.5rem;display:flex;flex-direction:column}
+.clink{display:flex;align-items:center;padding:1.2rem 0;border-bottom:1px solid var(--g3);text-decoration:none;cursor:none}
+.clink:first-child{border-top:1px solid var(--g3)}
+.clink-label{font-size:10px;letter-spacing:.14em;text-transform:uppercase;color:var(--g2);margin-bottom:.2rem}
+.clink-val{font-size:14px;color:var(--g1);transition:color .2s}
+.clink:hover .clink-val{color:var(--blue)}
+
+/* terminal form */
+.tform{background:var(--d1);border:1px solid rgba(74,158,255,.1);border-radius:4px;overflow:hidden}
+.tform-bar{height:32px;background:var(--d2);border-bottom:1px solid rgba(255,255,255,.05);display:flex;align-items:center;padding:0 1rem;gap:.5rem}
+.tform-t{flex:1;text-align:center;font-size:10px;color:var(--g2);letter-spacing:.07em}
+.tform-body{padding:1.5rem}
+.fg{margin-bottom:1.1rem}
+.fl{font-size:10px;letter-spacing:.16em;text-transform:uppercase;color:var(--blue);margin-bottom:.4rem;display:flex;gap:6px;align-items:center}
+.fl::before{content:'$';color:var(--g2)}
+.fi,.fta{width:100%;background:transparent;border:none;border-bottom:1px solid rgba(74,158,255,.15);color:var(--wh);font-family:var(--mono);font-size:13px;padding:7px 0;outline:none;transition:border-color .2s}
+.fi:focus,.fta:focus{border-bottom-color:var(--blue)}
+.fi::placeholder,.fta::placeholder{color:var(--g2)}
+.fta{min-height:80px;resize:none;line-height:1.7;border:1px solid rgba(74,158,255,.1);padding:9px;border-radius:3px;font-size:13px}
+.fta:focus{border-color:rgba(74,158,255,.35)}
+.fsub{width:100%;background:var(--blue);color:var(--blk);border:none;padding:13px;font-family:var(--mono);font-size:12px;font-weight:700;letter-spacing:.1em;text-transform:uppercase;cursor:none;transition:background .2s;border-radius:3px;display:flex;align-items:center;justify-content:center;gap:8px;margin-top:.75rem}
+.fsub:hover{background:var(--blue-d)}
+
+/* FOOTER */
+footer{padding:2rem 4rem;border-top:1px solid rgba(74,158,255,.06);display:flex;align-items:center;justify-content:space-between;background:var(--d1)}
+.ft-l{font-size:11px;color:var(--g2);letter-spacing:.06em}
+.ft-l span{color:var(--blue)}
+.ft-r{display:flex;gap:2rem}
+.ft-r a{font-size:11px;color:var(--g2);text-decoration:none;letter-spacing:.06em;cursor:none;transition:color .2s}
+.ft-r a:hover{color:var(--wh)}
+
+/* WA FLOAT */
+.waf{position:fixed;bottom:2rem;right:2rem;width:48px;height:48px;background:#25D366;border-radius:50%;display:flex;align-items:center;justify-content:center;z-index:400;text-decoration:none;cursor:none;transition:transform .2s;box-shadow:0 4px 18px rgba(37,211,102,.28)}
+.waf:hover{transform:scale(1.08)}
+
+/* REVEAL */
+.rv{opacity:0;transform:translateY(16px);transition:opacity .6s ease,transform .6s ease}
+.rv.v{opacity:1;transform:none}
+.d1{transition-delay:.08s}.d2{transition-delay:.16s}.d3{transition-delay:.24s}.d4{transition-delay:.32s}
+
+@media(max-width:1024px){
+  .hero{grid-template-columns:1fr}.hero-r{display:none}
+  .split{grid-template-columns:1fr}.split-l{border-right:none;border-bottom:1px solid rgba(74,158,255,.06)}
+  .proj-grid{grid-template-columns:1fr 1fr}
+  .ct-wrap{grid-template-columns:1fr}.ct-l{border-right:none;border-bottom:1px solid rgba(74,158,255,.06)}
+}
+@media(max-width:680px){
+  .topbar{padding:0 1rem}.tb-nav{display:none}
+  .hero-l{padding:3.5rem 1.5rem 3rem}
+  .sec,.sec.full,.split-l,.split-r,.ct-l,.ct-r{padding:4rem 1.5rem}
+  .proj-grid{grid-template-columns:1fr}
+  .stats{grid-template-columns:1fr 1fr}
+  footer{flex-direction:column;gap:1rem;padding:1.5rem;text-align:center}
+}
+
+/* CT Mil Graus — fire red dark */
+.pv-ctmg{background:#060303;border-bottom:1px solid #1a0808}
+.pvct-bar{width:48px;height:2px;background:linear-gradient(90deg,#D42020,#FF7A1A);margin:0 auto 8px}
+.pvct-title{font-family:'Georgia',serif;font-size:19px;font-weight:900;color:#F8F2EE;text-align:center;letter-spacing:.12em;text-transform:uppercase}
+.pvct-sub{font-size:7px;letter-spacing:.24em;color:#8A7070;text-align:center;margin-top:4px;text-transform:uppercase}
+.pvct-tag{display:inline-block;font-size:7px;letter-spacing:.1em;color:#FF5B3A;border:1px solid rgba(212,32,32,.35);padding:3px 10px;margin-top:10px}
+
+/* Mary Kay Cristina — rose gold elegant */
+.pv-mk{background:#FDF8F5;border-bottom:1px solid #F0E8E0}
+.pvmk-badge{font-size:8px;letter-spacing:.22em;color:#B8869A;text-align:center;text-transform:uppercase;margin-bottom:6px}
+.pvmk-title{font-family:'Georgia',serif;font-size:17px;font-weight:700;color:#3D1F2D;text-align:center;font-style:italic}
+.pvmk-name{font-size:9px;letter-spacing:.18em;color:#B8869A;text-align:center;margin-top:4px;text-transform:uppercase}
+.pvmk-line{width:32px;height:1px;background:#D4A0B5;margin:7px auto 0}
+.pvmk-dots{display:flex;gap:5px;justify-content:center;margin-top:9px}
+.pvmk-dot{width:8px;height:8px;border-radius:50%;border:1px solid rgba(180,120,150,.3)}
+.pvmk-dot:nth-child(1){background:#F4C2CE}
+.pvmk-dot:nth-child(2){background:#E8A0B4}
+.pvmk-dot:nth-child(3){background:#D4A0B5}
+
+</style>
+</head>
+<body>
+
+<div id="cur"></div>
+
+<!-- TOPBAR -->
+<header class="topbar">
+  <div class="tb-dots"><div class="tb-dot r"></div><div class="tb-dot y"></div><div class="tb-dot g"></div></div>
+  <span class="tb-title">natanael<span>@</span>dev ~/portfolio</span>
+  <ul class="tb-nav">
+    <li><a href="#inicio" class="on">~/inicio</a></li>
+    <li><a href="#sobre">~/sobre</a></li>
+    <li><a href="#projetos">~/projetos</a></li>
+    <li><a href="#contato">~/contato</a></li>
+  </ul>
+</header>
+
+<div class="w">
+
+<!-- HERO -->
+<section class="hero" id="inicio">
+  <div class="hero-ghost">N</div>
+
+  <div class="hero-l">
+    <div class="hero-prompt rv">
+      <span class="path">~/portfolio</span>
+      <span class="sym">$</span>
+      <span>whoami</span>
+    </div>
+
+    <h1 class="hero-name rv d1">
+      <span class="dim">dev.</span><br>
+      <span class="acc">Natanael</span>
+    </h1>
+
+    <p class="hero-role rv d2">
+      <span class="g">frontend</span> &amp; <span class="c">web design</span>
+      <span class="op" style="color:var(--g2)"> // </span><span class="p">freelance</span><br>
+      <span style="color:var(--g1)">Monte Sião · MG · Brasil</span>
+    </p>
+
+    <div class="hero-btns rv d3">
+      <a href="#projetos" class="btn-t"><span style="color:var(--g1)">$</span> ver projetos</a>
+      <a href="#contato" class="btn-g"><span style="color:var(--g2)">//</span> contratar</a>
+    </div>
+
+    <div class="code-block rv d4">
+      <div class="cl"><span class="ln">1</span><span class="kw">const </span><span class="var">dev </span><span class="op">= </span><span class="ty">{</span></div>
+      <div class="cl"><span class="ln">2</span>&nbsp;&nbsp;<span class="prop">nome</span><span class="op">: </span><span class="str">"Natanael"</span><span class="op">,</span></div>
+      <div class="cl"><span class="ln">3</span>&nbsp;&nbsp;<span class="prop">local</span><span class="op">: </span><span class="str">"Monte Sião, MG"</span><span class="op">,</span></div>
+      <div class="cl"><span class="ln">4</span>&nbsp;&nbsp;<span class="prop">stack</span><span class="op">: </span><span class="ty">[</span><span class="str">"HTML"</span><span class="op">, </span><span class="str">"CSS"</span><span class="op">, </span><span class="str">"JS"</span><span class="op">, </span><span class="str">"React"</span><span class="ty">]</span><span class="op">,</span></div>
+      <div class="cl"><span class="ln">5</span>&nbsp;&nbsp;<span class="prop">disponivel</span><span class="op">: </span><span class="val">true</span><span class="op">,</span></div>
+      <div class="cl"><span class="ln">6</span>&nbsp;&nbsp;<span class="fn">entregar</span><span class="op">: () </span><span class="kw">=&gt; </span><span class="str">"sites que vendem"</span></div>
+      <div class="cl"><span class="ln">7</span><span class="ty">}</span></div>
+      <div class="cl"><span class="ln">8</span></div>
+      <div class="cl"><span class="ln">9</span><span class="cmt">// pronto para o próximo projeto</span><span class="cc"></span></div>
+    </div>
+  </div>
+
+  <!-- TERMINAL RIGHT -->
+  <div class="hero-r">
+    <div class="term">
+      <div class="term-bar">
+        <div class="tb-dot r"></div><div class="tb-dot y"></div><div class="tb-dot g"></div>
+        <span class="term-bar-t">bash — natanael@dev</span>
+      </div>
+      <div class="term-body">
+        <div class="tb"></div>
+        <div class="tl"><span class="tp">natanael@dev:~$</span>&nbsp;<span class="tc">whoami</span></div>
+        <div class="tl"><span class="to">Dev freelance · criador de sites que <span class="tok">funcionam</span></span></div>
+        <div class="tb"></div>
+        <div class="tl"><span class="tp">natanael@dev:~$</span>&nbsp;<span class="tc">ls ./projetos/</span></div>
+        <div class="tl"><span class="tpath">1335-garage/</span>&nbsp;&nbsp;<span class="tpath">beep/</span>&nbsp;&nbsp;<span class="tpath">minas-la/</span></div>
+        <div class="tb"></div>
+        <div class="tl"><span class="tp">natanael@dev:~$</span>&nbsp;<span class="tc">cat skills.txt</span></div>
+        <div class="tl"><span class="tok">✓</span>&nbsp;<span class="to">HTML · CSS · JavaScript · React</span></div>
+        <div class="tl"><span class="tok">✓</span>&nbsp;<span class="to">Design responsivo · UI design</span></div>
+        <div class="tl"><span class="tok">✓</span>&nbsp;<span class="to">Landing pages &amp; e-commerce</span></div>
+        <div class="tl"><span class="tok">✓</span>&nbsp;<span class="to">Integração WhatsApp &amp; deploy</span></div>
+        <div class="tb"></div>
+        <div class="tl"><span class="tp">natanael@dev:~$</span>&nbsp;<span class="tc">echo $STATUS</span></div>
+        <div class="tl"><span class="tok">DISPONÍVEL PARA NOVOS PROJETOS</span></div>
+        <div class="tb"></div>
+        <div class="tl"><span class="tp">natanael@dev:~$</span>&nbsp;<span id="typeTarget" class="tc"></span><span style="color:var(--blue);display:inline-block;width:8px;height:14px;background:var(--blue);vertical-align:middle;animation:blink .85s step-end infinite"></span></div>
+        <div class="tb"></div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- STATS -->
+<div class="stats">
+  <div class="stat rv"><div class="stat-n">3</div><div class="stat-l">Projetos entregues</div></div>
+  <div class="stat rv d1"><div class="stat-n">48h</div><div class="stat-l">Prazo de entrega</div></div>
+  <div class="stat rv d2"><div class="stat-n">R$300</div><div class="stat-l">Preço inicial</div></div>
+  <div class="stat rv d3"><div class="stat-n">100%</div><div class="stat-l">Clientes satisfeitos</div></div>
+</div>
+
+<!-- ABOUT + SERVICES -->
+<div class="split" id="sobre">
+  <div class="split-l rv">
+    <div class="ey">sobre.md</div>
+    <h2 class="st">Código limpo.<br>Design que <span class="acc">converte.</span></h2>
+    <div class="ab-body">
+      <p>Crio sites com <span class="hl">identidade visual própria</span> — sem templates, sem design genérico. Cada projeto começa do zero com a cara do negócio em mente.</p>
+      <p>Meu foco é resultado: <span class="g">sites que convertem</span>, rápidos no celular e que o cliente mostra com orgulho. Da landing page ao e-commerce funcional.</p>
+      <p>Já trabalhei com loja de iPhones, distribuidora de fios e centro automotivo — cada um com estilo e funcionalidades completamente diferentes.</p>
+    </div>
+    <div class="skills">
+      <span class="skill">HTML5</span><span class="skill">CSS3</span><span class="skill">JavaScript</span>
+      <span class="skill">React</span><span class="skill">UI Design</span><span class="skill">Animações CSS</span>
+      <span class="skill">Responsivo</span><span class="skill">WhatsApp API</span><span class="skill">SEO</span>
+      <span class="skill">Deploy</span><span class="skill">Git</span><span class="skill">Figma</span>
+    </div>
+  </div>
+  <div class="split-r rv d1">
+    <div class="ey">servicos.json</div>
+    <h2 class="st">O que eu <span class="dim">entrego</span></h2>
+    <div class="svc-list">
+      <div class="svc"><div class="svc-num">01 /</div><div class="svc-name">Landing Page</div><div class="svc-desc">Apresentação com identidade forte, seções bem estruturadas e CTA para WhatsApp. Entrega em 48h.</div><div class="svc-price">A partir de R$ 300</div></div>
+      <div class="svc"><div class="svc-num">02 /</div><div class="svc-name">Loja / Catálogo</div><div class="svc-desc">Vitrine de produtos com filtros, carrinho funcional e pedido direto via WhatsApp. Sem mensalidade.</div><div class="svc-price">A partir de R$ 500</div></div>
+      <div class="svc"><div class="svc-num">03 /</div><div class="svc-name">Portfólio</div><div class="svc-desc">Site profissional com cases, serviços, sobre e formulário. Ideal para freelancers.</div><div class="svc-price">A partir de R$ 400</div></div>
+      <div class="svc" style="border-bottom:none"><div class="svc-num">04 /</div><div class="svc-name">Manutenção</div><div class="svc-desc">Atualização de conteúdo, ajustes e suporte técnico. Resposta garantida em 24h.</div><div class="svc-price">R$ 50–80 / mês</div></div>
+    </div>
+  </div>
+</div>
+
+<!-- PROJECTS -->
+<section class="sec full" id="projetos">
+  <div class="ey rv">projetos/</div>
+  <h2 class="st rv d1">Cases <span class="acc">reais.</span> <span class="dim">Resultados</span> reais.</h2>
+
+  <div class="proj-grid rv d2">
+
+    <div class="proj">
+      <div class="pv pv-garage">
+        <div><div class="pvg-bar"></div><div class="pvg-title">13'35</div><div class="pvg-sub">Centro Automotivo Especializado</div><div class="pvg-tag">Padrão é escolha.</div></div>
+      </div>
+      <div class="proj-body">
+        <div class="proj-num">01</div>
+        <div class="proj-name">13'35 Garage</div>
+        <div class="proj-tag">Centro Automotivo · Monte Sião</div>
+        <p class="proj-desc">Dark luxury para oficina com 33k seguidores e 5.0⭐ no Google. Identidade industrial, animações e formulário WhatsApp.</p>
+        <div class="proj-techs"><span class="chip">HTML</span><span class="chip">CSS Anim.</span><span class="chip">JavaScript</span><span class="chip">WA CTA</span></div>
+      </div>
+      <div class="proj-foot"><span class="proj-status">entregue</span><a href="https://wa.me/5535999145111?text=Quero+ver+o+site+da+1335" target="_blank" class="proj-lk">ver projeto →</a></div>
+    </div>
+
+    <div class="proj">
+      <div class="pv pv-beep">
+        <div><div class="pvb-logo"><span>beep</span></div><div class="pvb-title">Beep Monte Sião</div><div class="pvb-sub">iPhones · Acessórios</div><div class="pvb-chips"><span class="pvb-chip">iPhone 16 Pro</span><span class="pvb-chip">Apple Watch</span></div></div>
+      </div>
+      <div class="proj-body">
+        <div class="proj-num">02</div>
+        <div class="proj-name">Beep Monte Sião</div>
+        <div class="proj-tag">Loja de iPhones · Tecnologia</div>
+        <p class="proj-desc">E-commerce com carrinho funcional, filtros por categoria e checkout via WhatsApp. Grid assimétrico e sidebar vertical.</p>
+        <div class="proj-techs"><span class="chip">Carrinho JS</span><span class="chip">Filtros</span><span class="chip">Dark UI</span><span class="chip">Apple CDN</span></div>
+      </div>
+      <div class="proj-foot"><span class="proj-status">entregue</span><a href="https://wa.me/5535999145111?text=Quero+ver+o+site+da+Beep" target="_blank" class="proj-lk">ver projeto →</a></div>
+    </div>
+
+    <div class="proj">
+      <div class="pv pv-minas">
+        <div><div class="pvm-title">Minas Lã</div><div class="pvm-sub">Fios para Malharia</div><div class="pvm-line"></div></div>
+      </div>
+      <div class="proj-body">
+        <div class="proj-num">03</div>
+        <div class="proj-name">Minas Lã</div>
+        <div class="proj-tag">Fios para Malharia · Monte Sião</div>
+        <p class="proj-desc">Redesign editorial estilo revista italiana. Grid de 9 fabricantes, catálogo completo e formulário de orçamento.</p>
+        <div class="proj-techs"><span class="chip">Editorial CSS</span><span class="chip">Serif Type</span><span class="chip">Form WA</span><span class="chip">Marquee</span></div>
+      </div>
+      <div class="proj-foot"><span class="proj-status">entregue</span><a href="https://wa.me/5535999145111?text=Quero+ver+o+site+da+Minas+La" target="_blank" class="proj-lk">ver projeto →</a></div>
+    </div>
+
+
+    <!-- CT Mil Graus -->
+    <div class="proj">
+      <div class="pv pv-ctmg">
+        <div style="text-align:center">
+          <div class="pvct-bar"></div>
+          <div class="pvct-title">CT Mil Graus</div>
+          <div class="pvct-sub">Academia · Monte Sião</div>
+          <div class="pvct-tag">Alma forte não habita corpo fraco</div>
+        </div>
+      </div>
+      <div class="proj-body">
+        <div class="proj-num">04</div>
+        <div class="proj-name">CT Mil Graus</div>
+        <div class="proj-tag">Academia · Monte Sião</div>
+        <p class="proj-desc">Landing page com animação de fogo em canvas, modal de captação de leads, carrossel de planos com tabs e integração EmailJS.</p>
+        <div class="proj-techs"><span class="chip">Canvas Fire</span><span class="chip">Lead Modal</span><span class="chip">EmailJS</span><span class="chip">Carrossel</span></div>
+      </div>
+      <div class="proj-foot"><span class="proj-status">entregue</span><a href="https://wa.me/5535999145111?text=Quero+ver+o+site+da+CT+Mil+Graus" target="_blank" class="proj-lk">ver projeto →</a></div>
+    </div>
+
+    <!-- Mary Kay Cristina -->
+    <div class="proj">
+      <div class="pv pv-mk">
+        <div>
+          <div class="pvmk-badge">Mary Kay</div>
+          <div class="pvmk-title">Cristina</div>
+          <div class="pvmk-name">Consultora Independente</div>
+          <div class="pvmk-line"></div>
+          <div class="pvmk-dots">
+            <div class="pvmk-dot"></div>
+            <div class="pvmk-dot"></div>
+            <div class="pvmk-dot"></div>
+          </div>
+        </div>
+      </div>
+      <div class="proj-body">
+        <div class="proj-num">05</div>
+        <div class="proj-name">Mary Kay · Cristina</div>
+        <div class="proj-tag">Cosméticos · Revendedora</div>
+        <p class="proj-desc">Catálogo digital rose gold com produtos TimWise e CC Cream. Pedido direto pelo WhatsApp e identidade visual elegante.</p>
+        <div class="proj-techs"><span class="chip">Rose Gold UI</span><span class="chip">Catálogo</span><span class="chip">WA Pedido</span><span class="chip">Elegante</span></div>
+      </div>
+      <div class="proj-foot"><span class="proj-status">entregue</span><a href="https://wa.me/5535999145111?text=Quero+ver+o+site+da+Mary+Kay" target="_blank" class="proj-lk">ver projeto →</a></div>
+    </div>
+
+    <div class="proj empty" onclick="document.querySelector('#contato').scrollIntoView({behavior:'smooth'})">
+      <div class="empty-n">06</div>
+      <div class="empty-l">Seu projeto</div>
+      <div class="empty-s">Tem um negócio e precisa de site? Vamos conversar sobre o próximo.</div>
+      <button class="btn-t" style="font-size:11px;padding:10px 18px;margin-top:.25rem"><span style="color:var(--g1)">$</span> iniciar</button>
+    </div>
+
+  </div>
+
+  <!-- DEPOIMENTO -->
+  <div class="testi rv d3">
+    <div class="testi-stars">★★★★★</div>
+    <div class="testi-q">"Com todo respeito! <span class="acc">Krlhoooooo que toppp!!!</span> Vamos conversar sobre valores!"</div>
+    <div class="testi-by">
+      <span>Luís</span><div class="testi-sep"></div>
+      <span>13'35 Garage · Monte Sião, MG</span><div class="testi-sep"></div>
+      <span style="color:var(--blue)">cliente</span>
+    </div>
+  </div>
+</section>
+
+<hr class="rule">
+
+<!-- PROCESS -->
+<section class="sec">
+  <div class="ey rv">processo.md</div>
+  <h2 class="st rv d1">Como eu <span class="acc">trabalho</span></h2>
+  <div class="proc-list rv d2">
+    <div class="proc"><div class="proc-n">01</div><div><div class="proc-title">Briefing</div><div class="proc-desc">Entendo o negócio, o público e o objetivo antes de uma linha de código. O site precisa comunicar a identidade certa.</div></div></div>
+    <div class="proc"><div class="proc-n">02</div><div><div class="proc-title">Design único</div><div class="proc-desc">Paleta, tipografia e layout pensados para o seu negócio. Nunca templates — cada site tem cara própria.</div></div></div>
+    <div class="proc"><div class="proc-n">03</div><div><div class="proc-title">Desenvolvimento</div><div class="proc-desc">Código limpo, responsivo e rápido. Animações e funcionalidades como carrinho, filtros e WhatsApp integrado.</div></div></div>
+    <div class="proc" style="border-bottom:none"><div class="proc-n">04</div><div><div class="proc-title">Entrega & Deploy</div><div class="proc-desc">Site no ar com domínio configurado. Você recebe o arquivo e acesso total. Suporte pós-entrega incluso.</div></div></div>
+  </div>
+</section>
+
+<hr class="rule">
+
+<!-- CONTACT -->
+<div class="ct-wrap" id="contato">
+  <div class="ct-l rv">
+    <div class="ey">contato.sh</div>
+    <h2 class="st">Vamos <span class="acc">construir</span><br>algo juntos.</h2>
+    <p style="font-size:14px;line-height:1.9;color:var(--wh2);max-width:320px;margin-top:.5rem;font-weight:300">Tem um projeto em mente? Me manda uma mensagem. Respondo em até 2h nos dias úteis.</p>
+    <div class="ct-links">
+      <a href="https://wa.me/5535999145111" target="_blank" class="clink"><div><div class="clink-label">WhatsApp</div><div class="clink-val">(35) 99929-3968</div></div></a>
+      <a href="https://instagram.com/" target="_blank" class="clink"><div><div class="clink-label">Instagram</div><div class="clink-val">@natanael.dev</div></div></a>
+      <div class="clink"><div><div class="clink-label">Localização</div><div class="clink-val">Monte Sião, MG — Brasil</div></div></div>
+    </div>
+  </div>
+  <div class="ct-r rv d1">
+    <div class="tform">
+      <div class="tform-bar"><div class="tb-dot r"></div><div class="tb-dot y"></div><div class="tb-dot g"></div><span class="tform-t">novo-projeto.sh</span></div>
+      <div class="tform-body">
+        <div class="fg"><div class="fl">nome</div><input class="fi" type="text" placeholder="Seu nome" id="fn"></div>
+        <div class="fg"><div class="fl">whatsapp</div><input class="fi" type="tel" placeholder="(00) 00000-0000" id="ft"></div>
+        <div class="fg"><div class="fl">tipo_projeto</div><input class="fi" type="text" placeholder="Landing page, loja, portfólio..." id="ftp"></div>
+        <div class="fg"><div class="fl">mensagem</div><textarea class="fta" placeholder="Me conta sobre o seu negócio..." id="fm"></textarea></div>
+        <button class="fsub" onclick="enviar()"><span style="color:var(--blk)">$</span> enviar_mensagem()</button>
+      </div>
+    </div>
+  </div>
+</div>
+
+<footer>
+  <div class="ft-l"><span>natanael</span> · dev freelance · Monte Sião MG · © 2026</div>
+  <div class="ft-r">
+    <a href="https://wa.me/5535999145111" target="_blank">[whatsapp]</a>
+    <a href="#projetos">[projetos]</a>
+    <a href="#inicio">[↑ topo]</a>
+  </div>
+</footer>
+
+</div>
+
+<a href="https://wa.me/5535999145111" target="_blank" class="waf">
+  <svg width="22" height="22" viewBox="0 0 24 24" fill="white"><path d="M17.472 14.382c-.297-.149-1.758-.867-2.03-.967-.273-.099-.471-.148-.67.15-.197.297-.767.966-.94 1.164-.173.199-.347.223-.644.075-.297-.15-1.255-.463-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.298-.347.446-.52.149-.174.198-.298.298-.497.099-.198.05-.371-.025-.52-.075-.149-.669-1.612-.916-2.207-.242-.579-.487-.5-.669-.51-.173-.008-.371-.01-.57-.01-.198 0-.52.074-.792.372-.272.297-1.04 1.016-1.04 2.479 0 1.462 1.065 2.875 1.213 3.074.149.198 2.096 3.2 5.077 4.487.709.306 1.262.489 1.694.625.712.227 1.36.195 1.871.118.571-.085 1.758-.719 2.006-1.413.248-.694.248-1.289.173-1.413-.074-.124-.272-.198-.57-.347m-5.421 7.403h-.004a9.87 9.87 0 01-5.031-1.378l-.361-.214-3.741.982.998-3.648-.235-.374a9.86 9.86 0 01-1.51-5.26c.001-5.45 4.436-9.884 9.888-9.884 2.64 0 5.122 1.03 6.988 2.898a9.825 9.825 0 012.893 6.994c-.003 5.45-4.437 9.884-9.885 9.884m8.413-18.297A11.815 11.815 0 0012.05 0C5.495 0 .16 5.335.157 11.892c0 2.096.547 4.142 1.588 5.945L.057 24l6.305-1.654a11.882 11.882 0 005.683 1.448h.005c6.554 0 11.89-5.335 11.893-11.893a11.821 11.821 0 00-3.48-8.413Z"/></svg>
+</a>
+
+<script>
+// CURSOR
+const cur=document.getElementById('cur');
+document.addEventListener('mousemove',e=>{cur.style.left=e.clientX+'px';cur.style.top=e.clientY+'px'});
+document.querySelectorAll('a,button').forEach(el=>{
+  el.addEventListener('mouseenter',()=>{cur.style.width='14px';cur.style.background='#fff'});
+  el.addEventListener('mouseleave',()=>{cur.style.width='3px';cur.style.background='var(--blue)'});
+});
+
+// TYPING in terminal
+const cmds=['git commit -m "novo projeto"','npm run deploy','git push origin main','ssh natanael@dev'];
+let ci=0,pos=0,typing=true;
+const target=document.getElementById('typeTarget');
+function typeLoop(){
+  if(!target)return;
+  const cmd=cmds[ci%cmds.length];
+  if(typing){target.textContent=cmd.slice(0,pos+1);pos++;if(pos>=cmd.length){typing=false;setTimeout(typeLoop,1800);return}}
+  else{target.textContent=cmd.slice(0,pos-1);pos--;if(pos<=0){typing=true;ci++;setTimeout(typeLoop,400);return}}
+  setTimeout(typeLoop,typing?65:25);
+}
+typeLoop();
+
+// FORM
+function enviar(){
+  const nome=document.getElementById('fn').value.trim();
+  const tel=document.getElementById('ft').value.trim();
+  const tipo=document.getElementById('ftp').value.trim();
+  const msg=document.getElementById('fm').value.trim();
+  if(!nome||!tel){alert('Preencha nome e WhatsApp.');return}
+  const txt=`Olá Natanael! Quero contratar um site.\n\n*Nome:* ${nome}\n*WhatsApp:* ${tel}\n*Projeto:* ${tipo||'A definir'}\n*Mensagem:* ${msg||'—'}`;
+  window.open('https://wa.me/5535999293968?text='+encodeURIComponent(txt),'_blank');
+}
+
+// REVEAL
+const ro=new IntersectionObserver(es=>{es.forEach(e=>{if(e.isIntersecting){e.target.classList.add('v');ro.unobserve(e.target)}})},{threshold:.06});
+document.querySelectorAll('.rv').forEach(el=>ro.observe(el));
+
+// NAV ACTIVE
+window.addEventListener('scroll',()=>{
+  document.querySelectorAll('[id]').forEach(sec=>{
+    const lk=document.querySelector(`.tb-nav a[href="#${sec.id}"]`);
+    if(!lk)return;
+    const t=sec.offsetTop-80,b=t+sec.offsetHeight;
+    lk.classList.toggle('on',scrollY>=t&&scrollY<b);
+  });
+});
+</script>
+</body>
+</html>
